@@ -3146,7 +3146,8 @@ static int tcp_clean_rtx_queue(struct sock *sk, int prior_fackets,
 			if (!first_ackt)
 				first_ackt = last_ackt;
 
-			reord = min(pkts_acked, reord);
+			if (before(start_seq, reord))
+				reord = start_seq;
 			if (!after(scb->end_seq, tp->high_seq))
 				flag |= FLAG_ORIG_SACK_ACKED;
 		}
