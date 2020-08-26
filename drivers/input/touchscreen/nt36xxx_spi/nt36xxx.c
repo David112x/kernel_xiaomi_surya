@@ -25,6 +25,7 @@
 #include <linux/of_gpio.h>
 #include <linux/of_irq.h>
 #include <linux/pm_runtime.h>
+#include <linux/pm_qos.h>
 
 #if defined(CONFIG_FB)
 #ifdef CONFIG_DRM_MSM
@@ -1238,6 +1239,8 @@ static irqreturn_t nvt_ts_work_func(int irq, void *data)
 	int32_t i = 0;
 	int32_t finger_cnt = 0;
 
+	pm_qos_update_request(&ts->pm_qos_req, 100);
+
 #if WAKEUP_GESTURE
 #ifdef CONFIG_PM
 	if (ts->dev_pm_suspend && ts->is_gesture_mode) {
@@ -1383,7 +1386,7 @@ static irqreturn_t nvt_ts_work_func(int irq, void *data)
 		}
 	}
 #endif
-
+	pm_qos_update_request(&ts->pm_qos_req, PM_QOS_DEFAULT_VALUE);
 	input_sync(ts->input_dev);
 
 XFER_ERROR:
@@ -1814,6 +1817,11 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 			nvt_irq_enable(false);
 			NVT_LOG("request irq %d succeed\n", client->irq);
 		}
+
+		ts->pm_qos_req.type = PM_QOS_REQ_AFFINE_IRQ;
+		ts->pm_qos_req.irq = ts->client->irq;
+		pm_qos_add_request(&ts->pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
+				PM_QOS_DEFAULT_VALUE);
 	}
 
 #if WAKEUP_GESTURE
@@ -1951,6 +1959,9 @@ err_register_drm_notif_failed:
 		NVT_ERR("Error occurred while unregistering fb_notifier.\n");
 err_register_fb_notif_failed:
 #endif
+
+	pm_qos_remove_request(&ts->pm_qos_req);
+
 #elif defined(CONFIG_HAS_EARLYSUSPEND)
 	unregister_early_suspend(&ts->early_suspend);
 err_register_early_suspend_failed:

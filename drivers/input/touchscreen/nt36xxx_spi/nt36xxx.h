@@ -21,6 +21,7 @@
 #include <linux/delay.h>
 #include <linux/input.h>
 #include <linux/of.h>
+#include <linux/pm_qos.h>
 #include <linux/spi/spi.h>
 #include <linux/uaccess.h>
 #include <linux/regulator/consumer.h>
@@ -168,6 +169,9 @@ struct nvt_ts_data {
 	struct regulator *pwr_ibb; /* VSN -5V */
 #endif
 
+	struct pm_qos_request pm_spi_req;
+	struct pm_qos_request pm_touch_req;
+	struct pm_qos_request pm_qos_req;
 	struct mutex reg_lock;
 	struct device *nvt_touch_dev;
 	struct class *nvt_tp_class;
