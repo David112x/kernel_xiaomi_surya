@@ -26,6 +26,7 @@
 #include <linux/uaccess.h>
 #include <linux/regulator/consumer.h>
 #include <linux/pm_qos.h>
+#include <linux/spi/spi-geni-qcom.h>
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
