@@ -38,6 +38,7 @@
 #include <linux/cpu_input_boost.h>
 
 
+
 #include "drm_crtc_internal.h"
 
 void __drm_crtc_commit_free(struct kref *kref)
@@ -2255,18 +2256,21 @@ int drm_mode_atomic_ioctl(struct drm_device *dev,
 			(arg->flags & DRM_MODE_PAGE_FLIP_EVENT))
 		return -EINVAL;
 
-	/*
-	* Dont boost CPU & DDR if battery saver profile is enabled
-	* and boost CPU & DDR if balanced profile is enabled
-	*/
-	if (kp_active_mode() == 3 || kp_active_mode() == 0) {
-	    cpu_input_boost_kick_max(25);
-	    devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 75);
-	    devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 75);
-	  } else if (kp_active_mode() == 2) {
-	    cpu_input_boost_kick_max(15);
-	    devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 20);
-	    devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 20);
+	if (!(arg->flags & DRM_MODE_ATOMIC_TEST_ONLY) &&
+			df_boost_within_input(3250)) {
+			/*
+			* Dont boost CPU & DDR if battery saver profile is enabled
+			* and boost CPU & DDR if balanced profile is enabled
+			*/
+			if (kp_active_mode() == 3 || kp_active_mode() == 0) {
+				cpu_input_boost_kick_max(25);
+				devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 75);
+				devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 75);
+			} else if (kp_active_mode() == 2) {
+				cpu_input_boost_kick_max(15);
+				devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 20);
+				devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 20);
+		}
 	}
 
 	drm_modeset_acquire_init(&ctx, 0);
