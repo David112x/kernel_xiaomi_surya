@@ -1,0 +1,13 @@
+env:
+    token: "ENCRYPTED[!a7965a12cd07385d52a14daa77c914faa50ea9c7461045ae79434d8ae37c22d3675ea84577a332459ed6208461d161a4!]"
+
+task:
+  name: "Stratosphere Kernel Builder"
+  timeout_in: 1h
+  container:
+      image: panchajanya1999/archlinux:latest
+      cpu: 8
+      memory: 32G
+
+  Build_script:
+      - bash cirrus_build.sh
