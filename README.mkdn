@@ -1,7 +1,7 @@
 
 <img src="http://pre06.deviantart.net/ac5b/th/pre/i/2012/218/d/1/evening_victory_by_roen911-d5a019d.jpg">
 
-# Stratosphere Kernel 
+# Stratosphere Kernel (UNOFFICIAL)
 
 ##### Custom Kernel for Xiaomi Poco X3/NFC [Surya/Karna]
 
