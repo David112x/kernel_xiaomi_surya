@@ -131,3 +131,10 @@ kernel/configs/android-*.cfg
 #Ignoring Android.bp link file
 #
 Android.bp
+
+# Ignore stratosphere build files
+AnyKernel3/*
+Neutron/*
+Neutron.tar.zst 
+output/*
+Stratosphere-Canaries/*
