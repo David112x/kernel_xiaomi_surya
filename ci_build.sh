@@ -21,9 +21,9 @@ git clone --depth 1 https://github.com/Stratosphere-Kernel/Stratosphere-Canaries
 # Workaround for safe.directory permission fix
 git config --global safe.directory "$GITHUB_WORKSPACE"
 git config --global safe.directory /github/workspace
-git config --global --add safe.directory /__w/android_kernel_xiaomi_surya/android_kernel_xiaomi_surya
+git config --global --add safe.directory /__w/kernel_xiaomi_surya/kernel_xiaomi_surya
 
-# Export Environment Variables. 
+# Export Environment Variables.
 export DATE=$(date +"%d-%m-%Y-%I-%M")
 export PATH="$(pwd)/Neutron/bin:$PATH"
 # export PATH="$TC_DIR/bin:$HOME/gcc-arm/bin${PATH}"
@@ -57,7 +57,7 @@ BUILD_START=$(date +"%s")
 KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
 BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
-CHATID=-1001719821334
+CHATID=-1001979543351
 COMMIT_HEAD=$(git log --oneline -1)
 TERM=xterm
 
@@ -107,7 +107,7 @@ make $DEFCONFIG -j$THREADS CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm O
 
 # Make Kernel
 echo The system has $SYSMEM...
-echo Using $THREADS jobs for this build... 
+echo Using $THREADS jobs for this build...
 tg_post_msg "<b> Build Started on Github Actions</b>%0A<b>Build Number: </b><code>"$BUILD_NUMBER"</code>%0A<b>Date : </b><code>$(TZ=Etc/UTC date)</code>%0A<b>Top Commit : </b><code>$COMMIT_HEAD</code>%0A"
 # make -j$THREADS LD=ld.lld O=output/
 make -j$THREADS CC='ccache clang -Qunused-arguments -fcolor-diagnostics' LLVM=1 LD=ld.lld LLVM_IAS=1 AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=output/
@@ -118,7 +118,7 @@ if ! [ -a $KERNEL_IMG ];
     echo "An error has occured during compilation. Please check your code."
     tg_post_msg "<b>An error has occured during compilation. Build has failed</b>%0A"
     exit 1
-  fi 
+  fi
 
 # Make Flashable Zip
 cp "$KERNEL_IMG" "$ANYKERNEL_DIR"
