@@ -27,7 +27,7 @@ jobs:
         run: |
           bash ci_build.sh
         env:
-          token: ${{ secrets.TG_TOKEN }}
+          token: ${{secrets.TG_TOKEN}}
       - name: Store Kernel Package as Artifact
         uses: actions/upload-artifact@v3
         with:
