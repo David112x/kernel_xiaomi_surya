@@ -133,8 +133,8 @@ kernel/configs/android-*.cfg
 Android.bp
 
 # Ignore stratosphere build files
-AnyKernel3/*
-Neutron/*
+AnyKernel3/
+Neutron/
 Neutron.tar.zst 
-output/*
-Stratosphere-Canaries/*
+output/
+Stratosphere-Canaries/
