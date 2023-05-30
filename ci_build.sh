@@ -138,7 +138,7 @@ curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw
 java -jar zipsigner-3.0.jar UPDATE-AnyKernel2.zip Stratosphere-KSU-$BUILD_NUMBER.zip
 BUILD_END=$(date +"%s")
 DIFF=$((BUILD_END - BUILD_START))
-tg_post_build "Stratosphere-$BUILD_NUMBER.zip" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+tg_post_build "Stratosphere-KSU-$BUILD_NUMBER.zip" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
 
 
 # Upload Flashable zip to tmp.ninja and uguu.se
