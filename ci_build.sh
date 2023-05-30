@@ -135,7 +135,7 @@ fi
 zip -r9 UPDATE-AnyKernel2.zip * -x README.md LICENSE UPDATE-AnyKernel2.zip zipsigner.jar
 cp UPDATE-AnyKernel2.zip package.zip 
 curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-java -jar zipsigner-3.0.jar UPDATE-AnyKernel2.zip Stratosphere-$BUILD_NUMBER.zip
+java -jar zipsigner-3.0.jar UPDATE-AnyKernel2.zip Stratosphere-KSU-$BUILD_NUMBER.zip
 BUILD_END=$(date +"%s")
 DIFF=$((BUILD_END - BUILD_START))
 tg_post_build "Stratosphere-$BUILD_NUMBER.zip" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
