@@ -22,6 +22,8 @@ git clone --depth 1 https://github.com/Stratosphere-Kernel/Stratosphere-Canaries
 git config --global safe.directory "$GITHUB_WORKSPACE"
 git config --global safe.directory /github/workspace
 git config --global --add safe.directory /__w/kernel_xiaomi_surya/kernel_xiaomi_surya
+# Since I can't figure out how to do this on the Cirrus YML file, we'll do it here.
+git submodule update --init --recursive --remote
 
 # Export Environment Variables. 
 export DATE=$(date +"%d-%m-%Y-%I-%M")
