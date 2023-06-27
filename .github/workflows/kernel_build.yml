@@ -12,10 +12,11 @@ jobs:
     container:
       image: panchajanya1999/archlinux:latest
     steps:
-      - uses: actions/checkout@v3
       - name: Setup env
         run: pacman -Syu --needed --noconfirm wget base-devel xmlto inetutils bc cpio python-sphinx python-sphinx_rtd_theme graphviz imagemagick git python zip github-cli fortune-mod ccache
-      - name: Add repository as a safe directory
+      - name: Checkout repo
+      - uses: actions/checkout@v3
+      - name: Add repo as a safe directory
         run: git config --global --add safe.directory /__w/kernel_xiaomi_surya/kernel_xiaomi_surya
       - name: Checkout submodules
         run: git submodule update --init --recursive --remote
