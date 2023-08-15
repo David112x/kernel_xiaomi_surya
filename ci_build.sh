@@ -145,7 +145,7 @@ tg_post_build "Stratosphere-KSU-$BUILD_NUMBER.zip" "Build took : $((DIFF / 60)) 
 # curl -i -F files[]=@Stratosphere-"$BUILD_NUMBER".zip https://uguu.se/upload.php
 # curl -i -F files[]=@Stratosphere-"$BUILD_NUMBER".zip https://tmp.ninja/upload.php?output=text
 
-cp Stratosphere-"$BUILD_NUMBER".zip ../Stratosphere-Canaries/
+cp Stratosphere-KSU-"$BUILD_NUMBER".zip ../Stratosphere-Canaries/
 cd ../Stratosphere-Canaries/
 
 # Upload Flashable Zip to GitHub Releases <3
