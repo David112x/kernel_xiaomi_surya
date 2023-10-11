@@ -10,4 +10,4 @@ task:
       memory: 32G
 
   Build_script:
-      - bash cirrus_build.sh
+      - bash cirrus.sh
