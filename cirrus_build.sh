@@ -104,6 +104,10 @@ git log --decorate=auto --pretty=reference --graph -n 10 >> releasenotes.md
 cp releasenotes.md $(pwd)/Stratosphere-Canaries/
 }
 
+# Before building the kernel, first we need to install a few packages on Cirrus CI and so we'll do that.
+pacman -Syu --needed --noconfirm wget base-devel xmlto inetutils bc cpio python-sphinx python-sphinx_rtd_theme graphviz imagemagick git python zip github-cli fortune-mod ccache jre8-openjdk
+# We'll see if this does it.
+
 # Make defconfig
 # make $DEFCONFIG LD=aarch64-elf-ld.lld O=output/
 make $DEFCONFIG -j$THREADS CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=output/
