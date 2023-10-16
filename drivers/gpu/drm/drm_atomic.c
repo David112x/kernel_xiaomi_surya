@@ -2262,17 +2262,17 @@ int drm_mode_atomic_ioctl(struct drm_device *dev,
 			* We don't want to boost CPU and DDR that much if kp_mode = 0, so
 			* we'll treat it as balanced here.
 			* We'll boost CPU and DDR if kp_mode is set to 3, and if it's set
-			* to 2 or 0, we boost it a little bit, if it's set to 0, we do
+			* to 2 or 0, we boost it a little bit, if it's set to 1, we do
 			* nothing.
 			*/
 			if (kp_active_mode() == 3) {
-				cpu_input_boost_kick_max(25);
+				cpu_input_boost_kick_max(50);
 				devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 75);
 				devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 75);
 			} else if (kp_active_mode() == 2 || kp_active_mode() == 0) {
 				cpu_input_boost_kick_max(15);
-				devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 20);
-				devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 20);
+				devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 25);
+				devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 25);
 		}
 	}
 
