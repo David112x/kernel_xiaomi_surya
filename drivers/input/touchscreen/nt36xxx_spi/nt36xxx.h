@@ -21,9 +21,12 @@
 #include <linux/delay.h>
 #include <linux/input.h>
 #include <linux/of.h>
+#include <linux/pm_qos.h>
 #include <linux/spi/spi.h>
 #include <linux/uaccess.h>
 #include <linux/regulator/consumer.h>
+#include <linux/pm_qos.h>
+#include <linux/spi/spi-geni-qcom.h>
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
@@ -119,9 +122,11 @@ struct nvt_ts_data {
 	struct delayed_work nvt_fwu_work;
 	uint16_t addr;
 	int8_t phys[32];
+	struct workqueue_struct *coord_workqueue;
 #if defined(CONFIG_FB)
 	struct workqueue_struct *workqueue;
 	struct work_struct resume_work;
+	struct work_struct irq_work;
 #ifdef _MSM_DRM_NOTIFY_H_
 	struct notifier_block drm_notif;
 #else
@@ -168,6 +173,9 @@ struct nvt_ts_data {
 	struct regulator *pwr_ibb; /* VSN -5V */
 #endif
 
+	struct pm_qos_request pm_spi_req;
+	struct pm_qos_request pm_touch_req;
+	struct pm_qos_request pm_qos_req;
 	struct mutex reg_lock;
 	struct device *nvt_touch_dev;
 	struct class *nvt_tp_class;
