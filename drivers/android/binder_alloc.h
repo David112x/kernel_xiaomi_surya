@@ -134,6 +134,7 @@ extern int binder_alloc_shrinker_init(void);
 /*
 *void binder_alloc_shrinker_init(void);
 */
+
 extern void binder_alloc_shrinker_exit(void);
 extern void binder_alloc_vma_close(struct binder_alloc *alloc);
 extern struct binder_buffer *
