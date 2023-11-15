@@ -41,11 +41,11 @@ export USE_HOST_LEX=yes
 export KERNEL_IMG=output/arch/arm64/boot/Image
 export KERNEL_DTBO=output/arch/arm64/boot/dtbo.img
 export KERNEL_DTB=output/arch/arm64/boot/dts/qcom/sdmmagpie.dtb
-export DEFCONFIG=surya_defconfig
+export DEFCONFIG=surya-ksu_defconfig
 export ANYKERNEL_DIR=$(pwd)/AnyKernel3/
 export BUILD_NUMBER=$((GITHUB_RUN_NUMBER + 424))
 export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-export SYSMEM="$(vmstat -s | grep -i 'total memory' | sed 's/ *//')"
+export SYSMEM="$(($(vmstat -s | grep -i 'total memory' | sed 's/ *//' | sed 's/total//g;s/memory//g;s/K//g;s/  / /g') / 1000))"
 export GITBRNCH="$(git rev-parse --abbrev-ref HEAD)"
 if [ "$(cat /sys/devices/system/cpu/smt/active)" = "1" ]; then
 		export THREADS=$(($(nproc --all) * 2))
@@ -107,7 +107,7 @@ cp releasenotes.md $(pwd)/Stratosphere-Canaries/
 make $DEFCONFIG -j$THREADS CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=output/
 
 # Make Kernel
-echo The system has $SYSMEM...
+echo The system has $SYSMEM MB of total memory.
 echo Using $THREADS jobs for this build...
 echo Building branch: $GITBRNCH
 tg_post_msg "<b> Build Started on Github Actions</b>%0A<b>Branch: </b><code>$GITBRNCH</code>%0A<b>Build Number: </b><code>"$BUILD_NUMBER"</code>%0A<b>Date : </b><code>$(TZ=Etc/UTC date)</code>%0A<b>Top Commit : </b><code>$COMMIT_HEAD</code>%0A"
