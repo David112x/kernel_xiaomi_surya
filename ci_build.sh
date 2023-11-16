@@ -15,7 +15,7 @@ tar -xf Neutron.tar.zst -C Neutron/ || exit 1
 # Clone dependant repositories
 # git clone --depth 1 -b gcc-master https://github.com/mvaisakh/gcc-arm64.git gcc-arm64
 # git clone --depth 1 -b gcc-master https://github.com/mvaisakh/gcc-arm.git gcc-arm
-git clone --depth 1 -b surya https://github.com/taalojarvi/AnyKernel3 || exit 1
+git clone --depth 1 -b surya https://github.com/sunscape-stuff/AnyKernel3 || exit 1
 git clone --depth 1 https://github.com/Stratosphere-Kernel/Stratosphere-Canaries || exit 1
 
 # Workaround for safe.directory permission fix
