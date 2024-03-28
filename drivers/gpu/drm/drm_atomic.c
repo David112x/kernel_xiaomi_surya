@@ -2256,14 +2256,12 @@ int drm_mode_atomic_ioctl(struct drm_device *dev,
 			(arg->flags & DRM_MODE_PAGE_FLIP_EVENT))
 		return -EINVAL;
 
-	if (!(arg->flags & DRM_MODE_ATOMIC_TEST_ONLY) &&
-			df_boost_within_input(3250)) {
+	if (arg->flags & DRM_MODE_ATOMIC_TEST_ONLY) {
+			if (df_boost_within_input(2850)) {
 			/*
-			* We don't want to boost CPU and DDR that much if kp_mode = 0, so
-			* we'll treat it as balanced here.
-			* We'll boost CPU and DDR if kp_mode is set to 3, and if it's set
-			* to 2 or 0, we boost it a little bit, if it's set to 1, we do
-			* nothing.
+			* If on performance profile, boost a fair amount.
+			* If on balanced profile or not using kprofiles, boost a little bit.
+			* If on battery profile, do nothing.
 			*/
 			if (kp_active_mode() == 3) {
 				cpu_input_boost_kick_max(37);
@@ -2273,9 +2271,14 @@ int drm_mode_atomic_ioctl(struct drm_device *dev,
 				cpu_input_boost_kick_max(15);
 				devfreq_boost_kick_max(DEVFREQ_MSM_LLCCBW, 25);
 				devfreq_boost_kick_max(DEVFREQ_MSM_CPUBW, 25);
+			}
+		}
+		if (df_boost_within_input(3250)) {
+			/* Boost regardless of profile if we time out by 3.2 seconds. */
+			devfreq_boost_kick(DEVFREQ_MSM_CPUBW);
+			devfreq_boost_kick(DEVFREQ_MSM_LLCCBW);
 		}
 	}
-
 	drm_modeset_acquire_init(&ctx, 0);
 
 	state = drm_atomic_state_alloc(dev);
