@@ -675,8 +675,10 @@ void sde_kms_release_splash_resource(struct sde_kms *sde_kms,
  * @sde_kms: pointer to sde_kms structure
  * @crtc: pointer to drm_crtc structure
  */
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 void sde_kms_trigger_early_wakeup(struct sde_kms *sde_kms,
 		struct drm_crtc *crtc);
+#endif
 
 /*
  * sde_kms_update_pm_qos_irq_request - Update Qos vote for CPU receiving
