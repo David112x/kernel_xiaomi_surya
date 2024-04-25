@@ -715,6 +715,7 @@ static int _sde_debugfs_fps_status(struct inode *inode, struct file *file)
 }
 #endif
 
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 static ssize_t early_wakeup_store(struct device *device,
 		struct device_attribute *attr, const char *buf, size_t count)
 {
@@ -755,12 +756,15 @@ static ssize_t early_wakeup_store(struct device *device,
 
 	return count;
 }
+#endif
 
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 static ssize_t early_wakeup_show(struct device *device,
 		struct device_attribute *attr, char *buf)
 {
     return 0;
 }
+#endif
 
 static ssize_t set_fps_periodicity(struct device *device,
 		struct device_attribute *attr, const char *buf, size_t count)
@@ -931,12 +935,16 @@ static DEVICE_ATTR_RO(vsync_event);
 static DEVICE_ATTR(measured_fps, 0444, measured_fps_show, NULL);
 static DEVICE_ATTR(fps_periodicity_ms, 0644, fps_periodicity_show,
 							set_fps_periodicity);
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 static DEVICE_ATTR_RW(early_wakeup);
+#endif
 static struct attribute *sde_crtc_dev_attrs[] = {
 	&dev_attr_vsync_event.attr,
 	&dev_attr_measured_fps.attr,
 	&dev_attr_fps_periodicity_ms.attr,
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 	&dev_attr_early_wakeup.attr,
+#endif
 	NULL
 };
 
@@ -6881,6 +6889,7 @@ static void __sde_crtc_idle_notify_work(struct kthread_work *work)
 /*
  * __sde_crtc_early_wakeup_work - trigger early wakeup from user space
  */
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 static void __sde_crtc_early_wakeup_work(struct kthread_work *work)
 {
 	struct sde_crtc *sde_crtc = container_of(work, struct sde_crtc,
@@ -6911,6 +6920,7 @@ static void __sde_crtc_early_wakeup_work(struct kthread_work *work)
 	sde_kms = to_sde_kms(priv->kms);
 	sde_kms_trigger_early_wakeup(sde_kms, crtc);
 }
+#endif
 
 /* initialize crtc */
 struct drm_crtc *sde_crtc_init(struct drm_device *dev, struct drm_plane *plane)
@@ -7003,8 +7013,10 @@ struct drm_crtc *sde_crtc_init(struct drm_device *dev, struct drm_plane *plane)
 
 	kthread_init_delayed_work(&sde_crtc->idle_notify_work,
 					__sde_crtc_idle_notify_work);
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 	kthread_init_work(&sde_crtc->early_wakeup_work,
 					__sde_crtc_early_wakeup_work);
+#endif
 
 	SDE_DEBUG("%s: successfully initialized crtc\n", sde_crtc->name);
 	return crtc;

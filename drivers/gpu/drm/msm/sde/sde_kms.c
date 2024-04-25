@@ -367,6 +367,7 @@ static void _sde_debugfs_destroy(struct sde_kms *sde_kms)
 static int sde_kms_enable_vblank(struct msm_kms *kms, struct drm_crtc *crtc)
 {
 	int ret = 0;
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 	struct sde_kms *sde_kms;
 	struct msm_drm_private *priv;
 	struct sde_crtc *sde_crtc;
@@ -375,9 +376,9 @@ static int sde_kms_enable_vblank(struct msm_kms *kms, struct drm_crtc *crtc)
 	sde_kms = to_sde_kms(kms);
 	priv = sde_kms->dev->dev_private;
 	sde_crtc = to_sde_crtc(crtc);
-
+#endif
 	SDE_ATRACE_BEGIN("sde_kms_enable_vblank");
-
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 	if (sde_crtc->vblank_requested == false) {
 		SDE_ATRACE_BEGIN("sde_encoder_trigger_early_wakeup");
 		drm_for_each_encoder(drm_enc, crtc->dev)
@@ -390,9 +391,8 @@ static int sde_kms_enable_vblank(struct msm_kms *kms, struct drm_crtc *crtc)
 		}
 		SDE_ATRACE_END("sde_encoder_trigger_early_wakeup");
 	}
-
+#endif
 	ret = sde_crtc_vblank(crtc, true);
-
 	SDE_ATRACE_END("sde_kms_enable_vblank");
 
 	return ret;
@@ -3835,6 +3835,7 @@ int sde_kms_handle_recovery(struct drm_encoder *encoder)
 	return sde_encoder_wait_for_event(encoder, MSM_ENC_ACTIVE_REGION);
 }
 
+#ifdef CONFIG_DRM_SDE_EARLY_WAKEUP
 void sde_kms_trigger_early_wakeup(struct sde_kms *sde_kms,
 		struct drm_crtc *crtc)
 {
@@ -3860,3 +3861,4 @@ void sde_kms_trigger_early_wakeup(struct sde_kms *sde_kms,
 	}
 	SDE_ATRACE_END("sde_kms_trigger_early_wakeup");
 }
+#endif
