@@ -172,6 +172,16 @@ config DRM_SDE_SHP
 	  Each logical plane will appear as different
 	  planes and report back to user.
 
+config DRM_SDE_EARLY_WAKEUP
+	bool "Enable improved early wakeup support in SDE DRM"
+	default n
+	help
+	  Choose this option for improved early wakeup support.
+	  This option may improve the amount of time
+	  it takes for the system to wake up by 
+	  reducing the processing load on the first
+	  frame and improving frame drop count.
+
 config DRM_MSM_DSI_14NM_PHY
 	bool "Enable DSI 14nm PHY driver in MSM DRM (used by MSM8996/APQ8096)"
 	depends on DRM_MSM_DSI
