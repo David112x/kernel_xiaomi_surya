@@ -1,9 +1,11 @@
 
 <img src="http://pre06.deviantart.net/ac5b/th/pre/i/2012/218/d/1/evening_victory_by_roen911-d5a019d.jpg">
 
-# Stratosphere Kernel (UNOFFICIAL)
+# Stratosphere Kernel | Deprecated
 
 ##### Custom Kernel for Xiaomi Poco X3/NFC [Surya/Karna]
+
+### Stratosphere Kernel has been deprecated in favor of a newer [kernel](https://github.com/sunscape-stuff/kernel_xiaomi_surya).
 
 [![Build Kernel on Github Actions](https://github.com/Stratosphere-Kernel/android_kernel_xiaomi_surya/actions/workflows/kernel_build.yml/badge.svg)](https://github.com/Stratosphere-Kernel/android_kernel_xiaomi_surya/actions/workflows/kernel_build.yml)
 
